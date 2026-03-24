@@ -36,7 +36,7 @@ def main():
         sys.exit(1)
 
     # Generate PPT
-    create_ppt(questions, "output/questions2.pptx")
+    create_ppt(questions, "output/questions.pptx")
 
 
 if __name__ == "__main__":
