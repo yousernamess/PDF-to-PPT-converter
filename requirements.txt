@@ -1,0 +1,4 @@
+mpxpy
+python-dotenv
+python-pptx
+requests
