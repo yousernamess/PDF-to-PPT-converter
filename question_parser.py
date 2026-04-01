@@ -22,6 +22,7 @@ class QuestionParser:
     #  PATTERN BUILDERS  (called once on init)
     # ─────────────────────────────────────────
 
+
     def _build_block_pattern(self) -> re.Pattern:
         """
         Build a regex that splits the document into question blocks
@@ -31,24 +32,26 @@ class QuestionParser:
           - Heading-style:  "## ILLUSTRATION 7.57"
           - Inline-style:   "Q.1", "1.", "Q1"
         """
+
         escaped = [re.escape(p) for p in self.config.question.prefixes]
         prefix_group = '|'.join(escaped)
 
         if self.config.question.numbering == "decimal":
-            number = r'\d+\.\d+'
+            number = r'\d+\.\d+(?!\d)'  # Fix 2: negative lookahead
         elif self.config.question.numbering == "integer":
             number = r'\d+'
         else:
             number = r''
 
         if number:
-            # e.g.  "## ILLUSTRATION 7.57"  or  "Q.1"  or  "1."
-            block_start = rf'(?:{prefix_group})\s*{number}'
+            block_start = rf'(?:#+\s*)?(?:{prefix_group})\s*{number}'  # Fix 1: optional ##
         else:
-            block_start = rf'(?:{prefix_group})'
+            block_start = rf'(?:#+\s*)?(?:{prefix_group})'
 
         pattern = rf'({block_start}.*?)(?={block_start}|\Z)'
         return re.compile(pattern, re.S)
+
+
 
     def _build_solution_pattern(self) -> re.Pattern:
         """
@@ -165,12 +168,11 @@ class QuestionParser:
             if not raw_q:
                 continue
 
-            # Decide what text goes on the slide based on solution mode
             mode = self.config.solution.mode
             if mode == "same_slide":
-                slide_text = self.clean_math(raw_q + "\n\n" + raw_sol)
+                slide_text = raw_q + "\n\n" + raw_sol
             else:
-                slide_text = self.clean_math(raw_q)
+                slide_text = raw_q
 
             entry = {
                 "question_id": question_id,
@@ -179,9 +181,8 @@ class QuestionParser:
                 "has_math": self.has_math(raw_q),
             }
 
-            # For next_slide mode, attach solution as a separate entry
             if mode == "next_slide" and raw_sol:
-                entry["solution"] = self.clean_math(raw_sol)
+                entry["solution"] = raw_sol
             else:
                 entry["solution"] = ""
 

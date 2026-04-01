@@ -7,7 +7,7 @@ from ppt_generator import create_ppt
 def main():
     # Load markdown
     try:
-        with open("output/sample.md", "r", encoding="utf-8") as f:
+        with open("output/sample 2.md", "r", encoding="utf-8") as f:
             md_text = f.read()
     except FileNotFoundError as e:
         print(e)
@@ -36,7 +36,7 @@ def main():
         sys.exit(1)
 
     # Generate PPT
-    create_ppt(questions, "output/questions.pptx")
+    create_ppt(questions, "output/questions 2.pptx")
 
 
 if __name__ == "__main__":

@@ -2,3 +2,4 @@ mpxpy
 python-dotenv
 python-pptx
 requests
+matplotlib

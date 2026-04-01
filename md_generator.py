@@ -14,11 +14,11 @@ client = MathpixClient(
 
 
 pdf = client.pdf_new(
-    file_path='test questions.pdf',
+    file_path='test questions 2.pdf',
     convert_to_md=True,
 
 )
 
 # Get the Markdown outputs
-md_output_path = pdf.to_md_file(path='output/sample.md')
+md_output_path = pdf.to_md_file(path='output/sample 2.md')
 
