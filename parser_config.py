@@ -68,7 +68,7 @@ PRESETS: dict[str, ParserConfig] = {
     # Arihant-style books (current format you're already handling)
     "arihant_illustration": ParserConfig(
         question=QuestionConfig(
-            prefixes=["## ILLUSTRATION"],
+            prefixes=["## ILLUSTRATION", "ILLUSTRATION", "ILLISTRATION"],  # ✅ added
             numbering="decimal",
         ),
         solution=SolutionConfig(
